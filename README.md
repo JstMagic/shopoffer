@@ -26,27 +26,26 @@ Aim : To create an offer to be shared amongst customers. This offer will automat
 create other html offer pages to carryout cruid opperations
 
 # Running Demo
+    Method 1
+        Step 1
+        I have also uploaded the Jar file to google drive https://drive.google.com/file/d/1YVvTfCRAQq3zq3E-Ps_CbH8QXxY6Zzd2/view?usp=sharing
+        in the same directory open bash or cmd and if you have maven installed run the following command java -jar shopoffer-0.0.1- SNAPSHOT.jar mvn spring-boot:run
 
-* Method 1
- - Step 1
-I have also uploaded the Jar file to google drive https://drive.google.com/file/d/1YVvTfCRAQq3zq3E-Ps_CbH8QXxY6Zzd2/view?usp=sharing
-in the same directory open bash or cmd and if you have maven installed run the following command java -jar shopoffer-0.0.1-SNAPSHOT.jar mvn spring-boot:run
+        Step 2
+        When its running visit localhost:8080 and the hmtl offer creation page should appear
 
- - Step 2
-When its running visit localhost:8080 and the hmtl offer creation page should appear
+        to test all endpoints such as updating an offer or retrieving an offer this can be tested on Swaggger by going to 
+        http://localhost:8080/swagger-ui.html to test all the endpoints 
 
-to test all endpoints such as updating an offer or retrieving an offer this can be tested on Swaggger by going to 
-http://localhost:8080/swagger-ui.html to test all the endpoints 
+    Method 2
+        Step 1
+        open your favourite java ide and create a new project from this git repository
+        setup your ide by supplying the jDK 1.8+ and ensure maven is synced with the project
+        run the maven clean and build command, mvn clean compile
+        to start the project you can either click run on your ide after setting up project or run mvn spring-boot:run
 
-* Method 2
- - Step 1
-open your favourite java ide and create a new project from this git repository
-setup your ide by supplying the jDK 1.8+ and ensure maven is synced with the project
-run the maven clean and build command, mvn clean compile
-to start the project you can either click run on your ide after setting up project or run mvn spring-boot:run
+        Step 2
+        When its running visit localhost:8080 and the hmtl offer creation page should appear
 
- - Step 2
-When its running visit localhost:8080 and the hmtl offer creation page should appear
-
-to test all endpoints such as updating an offer or retrieving an offer this can be tested on Swaggger by going to 
-http://localhost:8080/swagger-ui.html to test all the endpoints 
+        to test all endpoints such as updating an offer or retrieving an offer this can be tested on Swaggger by going to 
+        http://localhost:8080/swagger-ui.html to test all the endpoints 
