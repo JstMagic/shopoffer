@@ -5,6 +5,10 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </head>
@@ -29,17 +33,18 @@ DRIBBBLE: https://dribbble.com/shots/4330167-404-Page-Lost-In-Space
         <img src="https://img.pngio.com/coupon-download-png-image-coupon-png-602_310.png" width="300px" >
 
         <div class="container-fluid justify-content-center">
-            <form class="justify-content-center">
+            <div class="col-lg-2" id="success_placeholder"></div>
+            <form class="offer" id="offer" method="post" action="/offer/create">
 
                 <div class="form-group col-lg-2" style="margin: 0 auto">
-                    <label for="exampleInputEmail1">Name of the offer</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Offer Name">
+                    <label for="offerName">Name of the offer</label>
+                    <input type="text" class="form-control" id="offerName" aria-describedby="emailHelp" placeholder="Enter Offer Name">
                     <small id="emailHelp" class="form-text text-muted">This will be the name of the offer</small>
                 </div>
 
                 <div class="form-group  col-lg-2" style="margin: 0 auto">
-                    <label for="exampleFormControlSelect1">Product on Sale</label>
-                    <select class="form-control" id="exampleFormControlSelect1">
+                    <label for="productName">Product on Sale</label>
+                    <select class="form-control" id="productName">
                         <option>Blue Chair</option>
                         <option>Brown Sofa</option>
                         <option>LG 75inch TV</option>
@@ -50,14 +55,14 @@ DRIBBBLE: https://dribbble.com/shots/4330167-404-Page-Lost-In-Space
                 </div>
 
                 <div class="form-group col-lg-2" style="margin: 0 auto">
-                    <label for="exampleInputEmail1">Price of the product</label>
-                    <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="New Offer price">
+                    <label for="offerPrice">Price of the product</label>
+                    <input type="number" min="0.01" step="0.01" max="2500" value="00.00" class="form-control" id="offerPrice" aria-describedby="emailHelp" placeholder="New Offer price">
                     <small id="emailHelp" class="form-text text-muted">Amount in £</small>
                 </div>
 
                 <div class="form-group col-lg-2" style="margin: 0 auto">
-                    <label for="exampleInputEmail1">Offer expiring date</label>
-                    <input type="datetime-local" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="New Offer price">
+                    <label for="expiringDate">Offer expiring date</label>
+                    <input type="datetime-local" class="form-control" id="expiringDate" aria-describedby="emailHelp" placeholder="New Offer price">
                     <small id="emailHelp" class="form-text text-muted">Date and time of offer expiration</small>
                 </div>
                 <button type="submit" class="btn btn-primary" style="margin-top: 2%">Create Offer</button>
@@ -83,5 +88,52 @@ DRIBBBLE: https://dribbble.com/shots/4330167-404-Page-Lost-In-Space
     </div>
 
 </div>
+
+<script>
+    $(document).ready(function () {
+        // $('.ac-new .list-body .time').html( formatDate($time));
+        $('.offer').submit(
+            function (e) {
+                var offerName = $('#offerName').val();
+                var productName = $('#productName').val();
+                var offerPrice = $('#offerPrice').val();
+                var expiringDate = $('#expiringDate').val();
+                // var crf = $('#crfProtect').val();
+                // e.preventDefault();
+                $.ajax({
+                    url: $(".offer").attr("action"),
+                    dataType: "json",
+                    // headers: {"X-CSRF-Token": crf},
+                    data: {
+                        offerName: offerName,
+                        productName: productName,
+                        offerPrice: offerPrice,
+                        expiringDate: expiringDate
+                    },
+                    // data:data,
+                    type: "POST",
+
+                    success: function (result) {
+
+                        var resultItem;
+                        var subResult;
+                        $.each(result, function () {
+                            // $('#success_placeholder').text(result.toString());
+                            $('#success_placeholder').text('Offer was successfully created, look below for the created offer <br>');
+                            resultHolder = 'OFFER ID' + result.id +'<br>OFFER NAME : '+ result.offerName+ '<br>OFFER PRODUCT NAME : ' + result.productName  +'<br>OFFER PRICE : ' + result.offerPrice + '<br>OFFER EXPIRING : ' + result.expiringDate + '<br>OFFER VALID : ' + result.valid + '<br>OFFER CANCELLED : ' + result.cancelled
+                            $('#success_placeholder').append(resultHolder);
+                        });
+
+                        $('.offer').slideUp();
+                    },
+                    error: function (xhr, status, error) {
+                        $('#success_placeholder').text(xhr.responseText);
+                        $('.offer').slideDown();
+                    }
+                });
+                return false;
+            });
+    });
+</script>
 </body>
 </html>

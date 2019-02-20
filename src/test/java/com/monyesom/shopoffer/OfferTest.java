@@ -15,11 +15,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.*;
 
 import static org.mockito.Mockito.when;
-import static org.mockito.ArgumentMatchers.*;
 
 @RunWith(MockitoJUnitRunner.class)
 @SpringBootTest
@@ -42,7 +40,7 @@ public class OfferTest {
         offer.setId(1L);
         offer.setValid(true);
         offer.setCancelled(false);
-        offer.setExpiringDate(Date.from(expiringTimeStampTest.atZone(ZoneId.systemDefault()).toInstant()));
+        offer.setExpiringDate(expiringTimeStampTest);
         offer.setOfferName("Spring Sale 50% off");
         offer.setProductName("Brown Chair");
         offer.setOfferPrice(new BigDecimal(20.00));
@@ -57,7 +55,7 @@ public class OfferTest {
     @Test
     public void isOfferValid_valid(){
         expiringTimeStampTest = LocalDateTime.now().plusMonths(2);
-        offer.setExpiringDate(Date.from(expiringTimeStampTest.atZone(ZoneId.systemDefault()).toInstant()));
+        offer.setExpiringDate(expiringTimeStampTest);
         boolean offerValid = offerService.isOfferValid(offer);
         Assert.assertTrue(offerValid);
     }

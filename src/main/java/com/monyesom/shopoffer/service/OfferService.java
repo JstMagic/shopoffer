@@ -28,7 +28,7 @@ public class OfferService {
      */
     public Long upsertOffer(Offer offer){
         if(offer !=null){
-            LocalDateTime expireDateTime = LocalDateTime.ofInstant(offer.getExpiringDate().toInstant(), ZoneId.systemDefault());
+            LocalDateTime expireDateTime = offer.getExpiringDate();
             if(expireDateTime.compareTo(LocalDateTime.now()) > 0){
                 offer.setValid(true);
             }
@@ -40,7 +40,7 @@ public class OfferService {
 
     public void upsertOffers(List<Offer>offers){
         offers.forEach( offer -> {
-            LocalDateTime expireDateTime = LocalDateTime.ofInstant(offer.getExpiringDate().toInstant(), ZoneId.systemDefault());
+            LocalDateTime expireDateTime =offer.getExpiringDate();
             if(expireDateTime.compareTo(LocalDateTime.now()) > 0){
                 offer.setValid(true);
             }
@@ -74,7 +74,7 @@ public class OfferService {
         boolean expired = true;
 
         if(offer !=null){
-            LocalDateTime expireDateTime = LocalDateTime.ofInstant(offer.getExpiringDate().toInstant(), ZoneId.systemDefault());
+            LocalDateTime expireDateTime = offer.getExpiringDate();
             expired =  expireDateTime.compareTo(LocalDateTime.now()) > 0;
         }
         return expired;

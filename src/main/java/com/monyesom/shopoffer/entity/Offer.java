@@ -1,11 +1,14 @@
 package com.monyesom.shopoffer.entity;
 
 import io.swagger.annotations.ApiModelProperty;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -24,7 +27,7 @@ public class Offer implements Serializable {
 
     @Column(name = "product_name")
     @NotNull
-    @ApiModelProperty(notes = "The product name to create an offer for", required = true)
+    @ApiModelProperty(notes = "The product name to create an offer for",  required = true, allowableValues = "Blue Chair, Brown Sofa, LG 75inch TV, HP All in One Printer, Samsung 28inch Monitor")
     private String productName;
 
     @Column(name = "offer_price")
@@ -35,7 +38,7 @@ public class Offer implements Serializable {
     @NotNull
     @Column(name = "expiring_date", nullable = false)
     @ApiModelProperty(notes = "When the offer will expire", required = true)
-    private Date expiringDate;
+    private LocalDateTime expiringDate;
 
     @Column(name = "valid")
     @NotNull
@@ -47,15 +50,15 @@ public class Offer implements Serializable {
     @ApiModelProperty(notes = "This will be checked if offer was manually cancelled", value = "false")
     boolean cancelled;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
     @Column(name = "created")
     @ApiModelProperty(notes = "When the offer was created, this will be auto-populated")
-    private Date created;
+    private LocalDateTime created;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @UpdateTimestamp
     @Column(name = "updated")
     @ApiModelProperty(notes = "When the offer was updated, this will be auto-populated")
-    private Date updated;
+    private LocalDateTime updated;
 
     public Long getId() {
         return id;
@@ -89,8 +92,12 @@ public class Offer implements Serializable {
         this.offerPrice = offerPrice;
     }
 
-    public Date getExpiringDate() {
+    public LocalDateTime getExpiringDate() {
         return expiringDate;
+    }
+
+    public void setExpiringDate(LocalDateTime expiringDate) {
+        this.expiringDate = expiringDate;
     }
 
     public boolean isValid() {
@@ -107,20 +114,5 @@ public class Offer implements Serializable {
 
     public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
-    }
-
-    public void setExpiringDate(Date expiringDate) {
-        this.expiringDate = expiringDate;
-    }
-
-    //date of last entries or updated entries
-    @PrePersist
-    protected void onCreate() {
-        created = new Date();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updated = new Date();
     }
 }

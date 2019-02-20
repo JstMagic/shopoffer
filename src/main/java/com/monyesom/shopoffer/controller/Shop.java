@@ -1,3 +1,5 @@
+
+
 package com.monyesom.shopoffer.controller;
 
 import com.monyesom.shopoffer.Exceptions.ResourceException;
@@ -6,6 +8,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +16,12 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import  com.monyesom.shopoffer.entity.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Controller
@@ -32,7 +41,7 @@ public class Shop {
     @ApiOperation(value = "Create a new offer")
     @ResponseBody
     public ResponseEntity<Void> createOffer(@ApiParam(name = "offer", value = " The offer to be created") @RequestBody Offer offer,
-                                                        UriComponentsBuilder ucBuilder) throws RuntimeException
+                                            UriComponentsBuilder ucBuilder) throws RuntimeException
     {
         /*
          * when trying to create a new RequirementDemand check if entry already exist based on the primaryKey
@@ -52,12 +61,50 @@ public class Shop {
             throw new ResourceException(HttpStatus.NO_CONTENT, "Something went wrong and was unable to create the offer");
         }
     }
+
+    /**
+     * This function will be called from an javascript ajax as supposed to
+     * the one above which is mainly just an endpoint for API calls
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/offer/create", method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE,
+            produces = {MediaType.APPLICATION_ATOM_XML_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public @ResponseBody  Offer createOffer(HttpServletRequest request) throws ParseException {
+        Offer offer = new Offer();
+        offer.setValid(true);
+        offer.setOfferPrice(new BigDecimal(request.getParameter("offerPrice")));
+        offer.setOfferName(request.getParameter("offerName"));
+        offer.setProductName(request.getParameter("productName"));
+        offer.setExpiringDate(LocalDateTime.parse(request.getParameter("expiringDate")));
+
+        /*
+         * when trying to create a new RequirementDemand check if entry already exist based on the primaryKey
+         * if it does return a bad request otherwise try to create the requirement demandDto and return created status if true
+         */
+        if(offer == null){
+            throw new ResourceException(HttpStatus.CONFLICT, "No offer sent for creation");
+        }
+        Long offerId = offerService.upsertOffer(offer);
+        if (offerId != null) {
+            offer.setId(offerId);
+            /**
+             * return the offer
+             */
+            return offer;
+        }
+        else {
+            throw new ResourceException(HttpStatus.NO_CONTENT, "Something went wrong and was unable to create the offer");
+        }
+    }
+
     @PutMapping("/offer/{id}")
     @ApiOperation(value = "Update a new offer")
     @ResponseBody
     public ResponseEntity<Offer> updateOffer(@ApiParam(name = "id", value = " The offer id to apply the update") @PathVariable(value = "id") Long id,
-                                            @ApiParam(name = "offer", value = " The offer to be updated")@RequestBody Offer offer,
-                                            UriComponentsBuilder ucBuilder) throws RuntimeException
+                                             @ApiParam(name = "offer", value = " The offer to be updated")@RequestBody Offer offer,
+                                             UriComponentsBuilder ucBuilder) throws RuntimeException
     {
         /*
          * when trying to create a new RequirementDemand check if entry already exist based on the primaryKey

@@ -19,9 +19,8 @@ public class SwaggerConfig extends WebMvcConfigurationSupport {
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.monyesom.shopoffer.controller"))
-                .paths(regex("/.*"))
+                .paths(regex("/off.*"))
                 .build();
-
     }
     @Override
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {

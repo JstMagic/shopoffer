@@ -28,7 +28,7 @@ public class ScheduledTasks {
         List<Offer> validOffers = offerService.findAllValid();
         validOffers.forEach( offer ->{
             if(offer !=null){
-                LocalDateTime expireDateTime = LocalDateTime.ofInstant(offer.getExpiringDate().toInstant(), ZoneId.systemDefault());
+                LocalDateTime expireDateTime = offer.getExpiringDate();
                 if (expireDateTime.compareTo(LocalDateTime.now()) < 0){
                     offer.setValid(false);
                     log.info(offer.getOfferName() + " has just expired and no longer valid.");
