@@ -1,5 +1,8 @@
-# shopoffer developer - Martin O - website blog.monyesom.com | blog.martinonyesom.com
+# Shopoffer
 Aim : To create an offer to be shared amongst customers. This offer will automatically expired and can be cancelled at anytime before it expires. The shop admin will be able to create an offer along with its expiring date.
+
+# Developer details
+    developer - Martin O - website blog.monyesom.com | blog.martinonyesom.com
 
 # Tech Used
   - Spring Boot 2.1.3
