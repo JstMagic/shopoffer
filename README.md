@@ -1,5 +1,5 @@
 # Shopoffer
-Aim : To create an offer to be shared amongst customers. This offer will automatically expired and can be cancelled at anytime before it expires. The shop admin will be able to create an offer along with its expiring date.
+Aim : To create offers for certain products to be shared amongst customers. These offers will automatically expires and can be cancelled at anytime before it expires. The shop admin will be able to create an offer along with its expiring date.
 
 # Developer details
     developer - Martin O - website blog.monyesom.com | blog.martinonyesom.com
@@ -22,7 +22,7 @@ Aim : To create an offer to be shared amongst customers. This offer will automat
    - (1) it checks if an offer is still valid based on the expiration date > current timestamp (then offer expired) when you make an api call to it but this code was commented out so I could implement a different method
    - (2) created a ScheduledTasks which runs every 5 seconds to check if an offer is still valid and if its invalid it flags the offer in the database field (valid) to false, if an offer is already canceled then it doesn't mark this offer
 
-# What i didnt do
+# What I didnt do
 create other html offer pages to carryout cruid opperations
 
 # Running Demo
